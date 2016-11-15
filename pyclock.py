@@ -18,7 +18,17 @@ class PyClock(gtk.Window):
     Main class for PyClock.
     """
 
+    @property
+    def _TIME(self):
+        """
+        Time property.
+        """
+        return self._time
 
+    @_TIME.setter
+    def _TIME(self, the_time):
+        self._time = the_time
+        self.redraw_canvas()
 
     def __init__(self):
         """
@@ -195,14 +205,6 @@ class PyClock(gtk.Window):
         # returning True ensures that the timer object will fire again.
         return True
 
-    def _get_time(self):
-        return self._time
-
-    def _set_time(self, the_time):
-        self._time = the_time
-        self.redraw_canvas()
-
-    _TIME = property(_get_time, _set_time)
 
 if __name__ == "__main__":
     PyClock()
