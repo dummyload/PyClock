@@ -18,27 +18,6 @@ class _BasePyClock(Window):
     Base class for PyClock.
     """
 
-    @property
-    def _TIME(self):
-        """
-        Time property.
-        """
-        return self._time
-
-    @_TIME.setter
-    def _TIME(self, the_time):
-        """
-        Method for setting the _TIME property.
-
-        @type the_time: datetime
-        @param the_time: Datetime object containing the current time.
-        """
-        # self._time = {'day': the_time.day,
-        #               'month': the_time.month,
-        #               'year': the_time.year}
-        self._time = the_time
-        self.redraw_canvas()
-
     def __init__(self, title):
         """
         Instantiate an instance of _BasePyClock.
@@ -50,8 +29,7 @@ class _BasePyClock(Window):
         self.set_position(position=WIN_POS_CENTER)
         self.connect("destroy", main_quit)
 
-        self._time = None
-        self._update()
+        self._time = datetime.now()
 
         self._draw_area = DrawingArea()
         self._draw_area.connect("expose-event", self._expose)
@@ -67,14 +45,15 @@ class _BasePyClock(Window):
         """
         print "'_expose()' needs implementing"
 
-    def redraw_canvas(self):
+    def _redraw_canvas(self):
         """
         Redraw the canvas to make it look as thought the hands are
         ticking.
         """
         if self.window:
             dimensions = self.get_allocation()
-            rect = Rectangle(0, 0, dimensions.width, dimensions.height)
+            rect = Rectangle(width=dimensions.width,
+                             height=dimensions.height)
             self.window.invalidate_rect(rect, True)
             self.window.process_updates(True)
 
@@ -87,7 +66,8 @@ class _BasePyClock(Window):
         @return: Return True to ensure that the timer object will fire
             again.
         """
-        self._TIME = datetime.now()
+        self._time = datetime.now()
+        self._redraw_canvas()
 
         # returning True ensures that the timer object will fire again.
         return True

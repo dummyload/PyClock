@@ -35,6 +35,12 @@ class BinaryPyClock(_BasePyClock):
         """
         Method used to draw on to the canvas.
         """
+        self._context = self._draw_area.window.cairo_create()
+        content_area = gtk.gdk.Rectangle(width=self.allocation.width,
+                                         height=self.allocation.height)
+        self._context.rectangle(content_area)
+        self._context.clip()
+
 
 if __name__ == "__main__":
     BinaryPyClock()

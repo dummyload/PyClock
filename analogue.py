@@ -31,8 +31,9 @@ class AnaloguePyClock(_BasePyClock):
 
         """
         self._context = self._draw_area.window.cairo_create()
-        self._context.rectangle(0, 0, self.allocation.width,
-                                self.allocation.height)
+        content_area = gtk.gdk.Rectangle(width=self.allocation.width,
+                                         height=self.allocation.height)
+        self._context.rectangle(content_area)
         self._context.clip()
 
         dimensions = self.get_allocation()
@@ -157,6 +158,13 @@ class AnaloguePyClock(_BasePyClock):
 
         self._context.stroke()
         self._context.restore()
+
+        # add a circle to cover up the point where all hands meet.
+        self._context.set_source_rgb(1.0, 0.0, 0.0)
+        self._context.arc(self._center_x, self._center_y, 5,
+                          0, 2 * pi)
+        self._context.fill_preserve()
+        self._context.stroke()
 
 
 if __name__ == "__main__":
