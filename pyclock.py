@@ -14,6 +14,7 @@ from gtk import main
 
 # LOCAL IMPORTS
 from analogue import AnaloguePyClock
+from binary import BinaryPyClock
 
 
 def _parse_arguments():
@@ -42,7 +43,7 @@ if __name__ == "__main__":
     interface = args.get("interface")
 
     if interface == "binary":
-        pass
+        clock = BinaryPyClock()
     elif interface == "digital":
         pass
     else:

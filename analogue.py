@@ -7,54 +7,24 @@ Analogue clock using PyGTK2.
 
 
 # STDLIB IMPORTS
-from datetime import datetime
 from math import cos, pi, sin
 
 # THIRD PARTY IMPORTS
-from gtk.gdk import Rectangle
-from gobject import timeout_add
 import gtk
 
+# LOCAL IMPORTS
+from _BasePyClock import _BasePyClock
 
-class AnaloguePyClock(gtk.Window):
+
+class AnaloguePyClock(_BasePyClock):
     """
     Main class for PyClock.
     """
-
-    @property
-    def _TIME(self):
-        """
-        Time property.
-        """
-        return self._time
-
-    @_TIME.setter
-    def _TIME(self, the_time):
-        self._time = the_time
-        self.redraw_canvas()
-
     def __init__(self):
         """
         Instantiate an instance of PyClock.
         """
-        super(AnaloguePyClock, self).__init__()
-
-        self.set_title("Analogue PyClock")
-        self.resize(230, 230)
-        self.set_position(gtk.WIN_POS_CENTER)
-        self.connect("destroy", gtk.main_quit)
-
-        self._time = None
-        self._update()
-
-        self._draw_area = gtk.DrawingArea()
-
-        self._draw_area.connect("expose-event", self._expose)
-        self.add(self._draw_area)
-
-        timeout_add(1000, self._update)
-
-        self.show_all()
+        super(AnaloguePyClock, self).__init__(title="Analogue PyClock")
 
     def _expose(self, *arg):
         """
@@ -187,26 +157,6 @@ class AnaloguePyClock(gtk.Window):
 
         self._context.stroke()
         self._context.restore()
-
-    def redraw_canvas(self):
-        """
-        Redraw the canvas to make it look as thought the hands are
-        ticking.
-        """
-        if self.window:
-            dimensions = self.get_allocation()
-            rect = Rectangle(0, 0, dimensions.width, dimensions.height)
-            self.window.invalidate_rect(rect, True)
-            self.window.process_updates(True)
-
-    def _update(self):
-        """
-        Get the current time of the machine.
-        """
-        self._TIME = datetime.now()
-
-        # returning True ensures that the timer object will fire again.
-        return True
 
 
 if __name__ == "__main__":

@@ -7,12 +7,14 @@ Binary clock using PyGTK2.
 
 # STDLIB IMPORTS
 
-
 # THIRD PARTY IMPORTS
 import gtk
 
+# LOCAL IMPORTS
+from _BasePyClock import _BasePyClock
 
-class BinaryPyClock(gtk.Window):
+
+class BinaryPyClock(_BasePyClock):
     """
     Class implementing a clock with a binary interface.
     """
@@ -25,13 +27,14 @@ class BinaryPyClock(gtk.Window):
         @param led_colour: Colour of the LED's.
             DEFAULT: red
         """
-        super(BinaryPyClock, self).__init__()
+        super(BinaryPyClock, self).__init__(title="Binary PyClock")
 
-        self.set_title("Binary PyClock")
-        self.resize(width=300, height=200)
-        self.connect("destroy", gtk.main_quit)
+        self._led_colour = led_colour
 
-        self.show_all()
+    def _expose(self, *args):
+        """
+        Method used to draw on to the canvas.
+        """
 
 if __name__ == "__main__":
     BinaryPyClock()
