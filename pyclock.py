@@ -32,9 +32,12 @@ def _parse_arguments():
     parser.add_argument("-i", "--interface", choices=clock_interfaces,
                         default='analogue')
 
+    parser.add_argument("-l", "--led-colour", default='red', type=str)
+
     _args = parser.parse_args()
 
-    return {'interface': _args.interface}
+    return {'interface': _args.interface,
+            'led_colour': _args.led_colour}
 
 
 if __name__ == "__main__":
@@ -43,10 +46,13 @@ if __name__ == "__main__":
     interface = args.get("interface")
 
     if interface == "binary":
-        clock = BinaryPyClock()
+        clock = BinaryPyClock(led_colour=args.get("led_colour"))
     elif interface == "digital":
         pass
     else:
         clock = AnaloguePyClock()
 
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass

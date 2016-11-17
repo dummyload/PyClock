@@ -18,14 +18,25 @@ class _BasePyClock(Window):
     Base class for PyClock.
     """
 
-    def __init__(self, title):
+    def __init__(self, title, init_width=230, init_height=230):
         """
         Instantiate an instance of _BasePyClock.
+
+        @type title: str
+        @param title: String to be used for the window title.
+
+        @type init_width: int
+        @param init_width: Initial width of the window.
+            DEFAULT: 230
+
+        @type init_height: int
+        @param init_height: Initial heigh of the window.
+            DEFAULT: 230
         """
         super(_BasePyClock, self).__init__()
 
         self.set_title(title=title)
-        self.resize(width=230, height=230)
+        self.resize(width=init_width, height=init_height)
         self.set_position(position=WIN_POS_CENTER)
         self.connect("destroy", main_quit)
 

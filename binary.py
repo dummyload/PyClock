@@ -9,7 +9,7 @@ Binary clock using PyGTK2.
 from math import pi
 
 # THIRD PARTY IMPORTS
-from gtk.gdk import Color
+from gtk.gdk import Color, color_parse
 import gtk
 
 # LOCAL IMPORTS
@@ -22,18 +22,21 @@ class BinaryPyClock(_BasePyClock):
     """
 
     _LED_RADIUS = 10
+    _NUM_LEDS = 11
 
-    def __init__(self, led_colour="#EE0000"):
+    def __init__(self, led_colour="red"):
         """
         Instantiate an instance of BinaryPyClock.
 
         @type led_colour: str
         @param led_colour: Colour of the LED's.
-            DEFAULT: #FF0000
+            DEFAULT: red
         """
-        super(BinaryPyClock, self).__init__(title="Binary PyClock")
+        super(BinaryPyClock, self).__init__(title="Binary PyClock",
+                                            init_width=440,
+                                            init_height=240)
 
-        color_obj = Color(led_colour)
+        color_obj = color_parse(spec=led_colour)
         self._led_red = color_obj.red / 65535.0
         self._led_green = color_obj.green / 65535.0
         self._led_blue = color_obj.blue / 65535.0
@@ -55,6 +58,8 @@ class BinaryPyClock(_BasePyClock):
         Draw the clock, i.e. the LEDs
         """
         self._draw_year_leds()
+        self._draw_month_leds()
+        self._draw_day_leds()
         self._draw_hour_leds()
         self._draw_minute_leds()
         self._draw_second_leds()
@@ -85,7 +90,9 @@ class BinaryPyClock(_BasePyClock):
 
             # LED off
             else:
-                self._context.set_source_rgb(0.0, 0.0, 0.0)
+                self._context.set_source_rgb(self._led_red * 0.325,
+                                             self._led_green * 0.325,
+                                             self._led_blue * 0.325)
 
             self._context.fill_preserve()
             self._context.set_source_rgb(0.0, 0.0, 0.0)
@@ -106,47 +113,78 @@ class BinaryPyClock(_BasePyClock):
 
     def _draw_year_leds(self):
         """
-        Draw the year
-        @return:
+        Draw the LEDs to display the year.
         """
         year = self._time.year
 
+        # convert the string years to a binary string. Remove the
+        # '0b' from the beginning of the string.
+        bin_year = bin(int(year))[2:]
+
+        self._draw_leds(binary=bin_year, y_pos=20)
+
+    def _draw_month_leds(self):
+        """
+        Draw the LEDs to display the month.
+        """
+        month = self._time.month
+
+        # convert the string months to a binary string. Remove the
+        # '0b' from the beginning of the string and ensure that the
+        # number of binary bits eqauls 4.
+        bin_month = bin(int(month))[2:].zfill(self._NUM_LEDS)
+
+        self._draw_leds(binary=bin_month, y_pos=60)
+
+    def _draw_day_leds(self):
+        """
+        Draw the LEDs to display the day.
+        """
+        day = self._time.day
+
+        # convert the string months to a binary string. Remove the
+        # '0b' from the beginning of the string and ensure that the
+        # number of binary bits equals 5.
+        bin_day = bin(int(day))[2:].zfill(self._NUM_LEDS)
+
+        self._draw_leds(binary=bin_day, y_pos=100)
+
     def _draw_hour_leds(self):
         """
-        Draw the LEDs to display the hours.
+        Draw the LEDs to display the hour.
         """
         hour = self._time.hour
 
         # convert the string hours to a binary string. Remove the
         # '0b' from the beginning of the string and ensure that the
         # number of binary bits equals 5.
-        bin_hour = bin(int(hour))[2:].zfill(5)
+        bin_hour = bin(int(hour))[2:].zfill(self._NUM_LEDS)
 
         self._draw_leds(binary=bin_hour, y_pos=140)
 
     def _draw_minute_leds(self):
         """
-        Draw the LEDs to display the minutes.
+        Draw the LEDs to display the minute.
         """
         minute = self._time.minute
 
         # convert the string minutes to a binary string. Remove the
         # '0b' from the beginning of the string and ensure that the
         # number of binary bits equals 6.
-        bin_min = bin(int(minute))[2:].zfill(6)
+        bin_min = bin(int(minute))[2:].zfill(self._NUM_LEDS)
 
         self._draw_leds(binary=bin_min, y_pos=180)
 
     def _draw_second_leds(self):
         """
-        Draw the LEDs to display the seconds.
+        Draw the LEDs to display the second.
         """
         seconds = self._time.second
 
         # convert the string seconds to a binary string. Remove the
         # '0b' from the beginning of the string and ensure that the
         # number of binary bits equals 6.
-        bin_sec = bin(int(seconds))[2:].zfill(6)
+        bin_sec = bin(int(seconds))[2:].zfill(self._NUM_LEDS)
 
         self._draw_leds(binary=bin_sec, y_pos=220)
 
