@@ -13,7 +13,7 @@ from gtk import DrawingArea, main_quit, WIN_POS_CENTER, Window
 from gtk.gdk import Rectangle
 
 
-class _BasePyClock(Window):
+class BasePyClock(Window):
     """
     Base class for PyClock.
     """
@@ -33,7 +33,7 @@ class _BasePyClock(Window):
         @param init_height: Initial heigh of the window.
             DEFAULT: 230
         """
-        super(_BasePyClock, self).__init__()
+        super(BasePyClock, self).__init__()
 
         self.set_title(title=title)
         self.resize(width=init_width, height=init_height)
@@ -50,11 +50,25 @@ class _BasePyClock(Window):
 
         self.show_all()
 
-    def _expose(self, *arg):
+    def _expose(self, *args):
         """
         Method used to draw on to the canvas.
         """
-        print "'_expose()' needs implementing"
+        self._context = self._draw_area.window.cairo_create()
+        content_area = Rectangle(width=self.allocation.width,
+                                 height=self.allocation.height)
+        self._context.rectangle(content_area)
+        self._context.clip()
+
+        self._draw_clock()
+
+    def _draw_clock(self):
+        """
+        Draw the clock.
+
+        NEEDS IMPLEMENTING IN THE INHERITING CLASS.
+        """
+        raise NotImplementedError
 
     def _redraw_canvas(self):
         """

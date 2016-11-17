@@ -13,10 +13,10 @@ from gtk.gdk import Color, color_parse
 import gtk
 
 # LOCAL IMPORTS
-from _BasePyClock import _BasePyClock
+from _BasePyClock import BasePyClock
 
 
-class BinaryPyClock(_BasePyClock):
+class BinaryPyClock(BasePyClock):
     """
     Class implementing a clock with a binary interface.
     """
@@ -40,18 +40,6 @@ class BinaryPyClock(_BasePyClock):
         self._led_red = color_obj.red / 65535.0
         self._led_green = color_obj.green / 65535.0
         self._led_blue = color_obj.blue / 65535.0
-
-    def _expose(self, *args):
-        """
-        Method used to draw on to the canvas.
-        """
-        self._context = self._draw_area.window.cairo_create()
-        content_area = gtk.gdk.Rectangle(width=self.allocation.width,
-                                         height=self.allocation.height)
-        self._context.rectangle(content_area)
-        self._context.clip()
-
-        self._draw_clock()
 
     def _draw_clock(self):
         """

@@ -13,10 +13,10 @@ from math import cos, pi, sin
 import gtk
 
 # LOCAL IMPORTS
-from _BasePyClock import _BasePyClock
+from _BasePyClock import BasePyClock
 
 
-class AnaloguePyClock(_BasePyClock):
+class AnaloguePyClock(BasePyClock):
     """
     Main class for PyClock.
     """
@@ -26,16 +26,10 @@ class AnaloguePyClock(_BasePyClock):
         """
         super(AnaloguePyClock, self).__init__(title="Analogue PyClock")
 
-    def _expose(self, *arg):
+    def _draw_clock(self):
         """
-
+        Draw the clock.
         """
-        self._context = self._draw_area.window.cairo_create()
-        content_area = gtk.gdk.Rectangle(width=self.allocation.width,
-                                         height=self.allocation.height)
-        self._context.rectangle(content_area)
-        self._context.clip()
-
         dimensions = self.get_allocation()
 
         # get the center point of the window.
@@ -49,8 +43,6 @@ class AnaloguePyClock(_BasePyClock):
 
         self._draw_clock_face()
         self._draw_hands()
-
-        return False
 
     def _draw_clock_face(self):
         """
