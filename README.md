@@ -17,8 +17,9 @@ python pyclock.py {options}
   -i | --interface | Interface type. Valid options: _**analogue**_, *binary*, *digital*
   -l | --led-colour | Colour of the LEDs for the digital and binary clock interfaces.
 
-  #### Colours
-  It is possible to change the colour of the 'LEDs' on both the digital and binary clock interfaces by using the *-l* or *--led-colour* flags.
+
+#### Colours
+It is possible to change the colour of the 'LEDs' on both the digital and binary clock interfaces by using the *-l* or *--led-colour* flags.
 
  Colours can be specified as either a hex RGB (#FF00FF) or a valid name from the [X11 Color Name Chart](https://en.wikipedia.org/wiki/X11_color_names#Color_name_chart).
 
