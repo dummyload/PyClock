@@ -15,6 +15,7 @@ from gtk import main
 # LOCAL IMPORTS
 from analogue import AnaloguePyClock
 from binary import BinaryPyClock
+from digital import DigitalPyClock
 
 
 def _parse_arguments():
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     if interface == "binary":
         clock = BinaryPyClock(led_colour=args.get("led_colour"))
     elif interface == "digital":
-        pass
+        clock = DigitalPyClock(led_colour=args.get("led_colour"))
     else:
         clock = AnaloguePyClock()
 

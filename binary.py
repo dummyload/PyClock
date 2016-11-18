@@ -9,7 +9,7 @@ Binary clock using PyGTK2.
 from math import pi
 
 # THIRD PARTY IMPORTS
-from gtk.gdk import Color, color_parse
+from gtk.gdk import color_parse
 import gtk
 
 # LOCAL IMPORTS
